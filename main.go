@@ -25,7 +25,7 @@ func main() {
 			if err := alert.HexSend(); err != nil {
 				fmt.Println("Unable to start Hex send", err)
 			}
-			time.Sleep(3 * time.Second)
+			time.Sleep(5 * time.Second)
 		}
 	}()
 

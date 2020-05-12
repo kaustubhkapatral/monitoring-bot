@@ -20,13 +20,12 @@ func HexCheck() (string, error) {
 	}
 
 	Precommits := utils.GetValidatorArray(blockInfo)
-
 	for i := 0; i < len(Precommits); i++ {
 		if Precommits[i] == hex {
 			return "", nil
 		}
 	}
-	return blockInfo.BlockMeta.Header.Height, nil
+	return blockInfo.Block.Header.Height, nil
 }
 
 func JailCheck() (bool, error) {

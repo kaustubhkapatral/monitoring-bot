@@ -46,7 +46,7 @@ func GetJSON(url string, target interface{}) error {
 
 func GetValidatorArray(blockinfo *types.BlockData) []string {
 	validatorAddrArray := make([]string, 150)
-	PrecommitsArray := blockinfo.Block.LastCommit.Precommits
+	PrecommitsArray := blockinfo.Block.LastCommit.Signatures
 	for i := 0; i < len(PrecommitsArray); i++ {
 		validatorAddrArray = append(validatorAddrArray, PrecommitsArray[i].ValidatorAddress)
 	}
