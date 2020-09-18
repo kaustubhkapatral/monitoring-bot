@@ -10,7 +10,7 @@ import (
 )
 
 func GetBlockHeightURL(IP string) (url string) {
-	url = IP + "/blocks/latest"
+	url = IP + "/consensus/blocklastcommit?name=Oasis_Local"
 	return url
 }
 
@@ -44,16 +44,26 @@ func GetJSON(url string, target interface{}) error {
 	return nil
 }
 
-func GetValidatorArray(blockinfo *types.BlockData) []string {
+func GetValidatorArray(blockinfo *types.Block_response) []string {
 	validatorAddrArray := make([]string, 150)
-	PrecommitsArray := blockinfo.Block.LastCommit.Precommits
+	PrecommitsArray := blockinfo.Result.Signatures
 	for i := 0; i < len(PrecommitsArray); i++ {
 		validatorAddrArray = append(validatorAddrArray, PrecommitsArray[i].ValidatorAddress)
 	}
 	return validatorAddrArray
 }
 
-func GetValidatorUrl(IP string, val string) (url string) {
-	url = IP + "/staking/validators/" + val
+func GetValidatorUrl(IP string) (url string) {
+	url = IP + "/scheduler/validators?name=Oasis_Local"
 	return url
+}
+
+func GetValidators(valinfo *types.Validators) []string {
+	validatorArray := make([]string, 150)
+	IdArray := valinfo.Result
+
+	for i := 0; i < len(IdArray); i++ {
+		validatorArray = append(validatorArray, IdArray[i].ID)
+	}
+	return validatorArray
 }

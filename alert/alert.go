@@ -67,7 +67,7 @@ func JailSend() error {
 	}
 
 	if resp == true {
-		msg.Text = "Validator has been jailed"
+		msg.Text = "Validator is not in acive set"
 		_, err = bot.Send(msg)
 		if err != nil {
 			return err

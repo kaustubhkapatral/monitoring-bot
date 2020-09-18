@@ -19,7 +19,7 @@ func SetConfig() {
 	NewApp = AppConfig{
 		Hex:     getEnv("Hex", ""),
 		ValAddr: getEnv("ValAddr", ""),
-		LCD:     getEnv("LCD", "http://localhost:1317"),
+		LCD:     getEnv("LCD", ""),
 		Token:   getEnv("Token", ""),
 		ChatId:  getEnv("ChatId", ""),
 	}

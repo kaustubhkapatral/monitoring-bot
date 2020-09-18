@@ -2,6 +2,7 @@ package valcheck
 
 import (
 	"fmt"
+	"strconv"
 
 	config "github.com/kaustubhkapatral/monitoring-bot/config"
 	types "github.com/kaustubhkapatral/monitoring-bot/types"
@@ -13,7 +14,7 @@ func HexCheck() (string, error) {
 	lcd := config.NewApp.LCD
 
 	blocksUrl := utils.GetBlockHeightURL(lcd)
-	blockInfo := &types.BlockData{}
+	blockInfo := &types.Block_response{}
 	if err := utils.GetJSON(blocksUrl, blockInfo); err != nil {
 		fmt.Println("Unable to query block endpoint", err)
 		return "", err
@@ -26,17 +27,23 @@ func HexCheck() (string, error) {
 			return "", nil
 		}
 	}
-	return blockInfo.BlockMeta.Header.Height, nil
+	return strconv.Itoa(blockInfo.Result.Height), nil
 }
 
 func JailCheck() (bool, error) {
 	valAddr := config.NewApp.ValAddr
 	lcd := config.NewApp.LCD
-	validatorUrl := utils.GetValidatorUrl(lcd, valAddr)
-	valInfo := &types.Validator{}
+	validatorUrl := utils.GetValidatorUrl(lcd)
+	valInfo := &types.Validators{}
 	if err := utils.GetJSON(validatorUrl, valInfo); err != nil {
 		fmt.Println("Unable to query validator endpoint", err)
 		return false, err
 	}
-	return valInfo.Result.Jailed, nil
+	TotalValidators := utils.GetValidators(valInfo)
+	for i := 0; i < len(TotalValidators); i++ {
+		if valAddr == TotalValidators[i] {
+			return false, nil
+		}
+	}
+	return true, nil
 }
