@@ -3,42 +3,13 @@ package types
 import "time"
 
 type BlockData struct {
-	BlockMeta struct {
-		BlockID struct {
+	BlockID struct {
+		Hash  string `json:"hash"`
+		Parts struct {
+			Total string `json:"total"`
 			Hash  string `json:"hash"`
-			Parts struct {
-				Total string `json:"total"`
-				Hash  string `json:"hash"`
-			} `json:"parts"`
-		} `json:"block_id"`
-		Header struct {
-			Version struct {
-				Block string `json:"block"`
-				App   string `json:"app"`
-			} `json:"version"`
-			ChainID     string    `json:"chain_id"`
-			Height      string    `json:"height"`
-			Time        time.Time `json:"time"`
-			NumTxs      string    `json:"num_txs"`
-			TotalTxs    string    `json:"total_txs"`
-			LastBlockID struct {
-				Hash  string `json:"hash"`
-				Parts struct {
-					Total string `json:"total"`
-					Hash  string `json:"hash"`
-				} `json:"parts"`
-			} `json:"last_block_id"`
-			LastCommitHash     string `json:"last_commit_hash"`
-			DataHash           string `json:"data_hash"`
-			ValidatorsHash     string `json:"validators_hash"`
-			NextValidatorsHash string `json:"next_validators_hash"`
-			ConsensusHash      string `json:"consensus_hash"`
-			AppHash            string `json:"app_hash"`
-			LastResultsHash    string `json:"last_results_hash"`
-			EvidenceHash       string `json:"evidence_hash"`
-			ProposerAddress    string `json:"proposer_address"`
-		} `json:"header"`
-	} `json:"block_meta"`
+		} `json:"parts"`
+	} `json:"block_id"`
 	Block struct {
 		Header struct {
 			Version struct {
@@ -48,8 +19,6 @@ type BlockData struct {
 			ChainID     string    `json:"chain_id"`
 			Height      string    `json:"height"`
 			Time        time.Time `json:"time"`
-			NumTxs      string    `json:"num_txs"`
-			TotalTxs    string    `json:"total_txs"`
 			LastBlockID struct {
 				Hash  string `json:"hash"`
 				Parts struct {
@@ -68,12 +37,14 @@ type BlockData struct {
 			ProposerAddress    string `json:"proposer_address"`
 		} `json:"header"`
 		Data struct {
-			Txs []string `json:"txs"`
+			Txs interface{} `json:"txs"`
 		} `json:"data"`
 		Evidence struct {
 			Evidence interface{} `json:"evidence"`
 		} `json:"evidence"`
 		LastCommit struct {
+			Height  string `json:"height"`
+			Round   string `json:"round"`
 			BlockID struct {
 				Hash  string `json:"hash"`
 				Parts struct {
@@ -81,22 +52,12 @@ type BlockData struct {
 					Hash  string `json:"hash"`
 				} `json:"parts"`
 			} `json:"block_id"`
-			Precommits []struct {
-				Type    int    `json:"type"`
-				Height  string `json:"height"`
-				Round   string `json:"round"`
-				BlockID struct {
-					Hash  string `json:"hash"`
-					Parts struct {
-						Total string `json:"total"`
-						Hash  string `json:"hash"`
-					} `json:"parts"`
-				} `json:"block_id"`
-				Timestamp        time.Time `json:"timestamp"`
+			Signatures []struct {
+				BlockIDFlag      int       `json:"block_id_flag"`
 				ValidatorAddress string    `json:"validator_address"`
-				ValidatorIndex   string    `json:"validator_index"`
+				Timestamp        time.Time `json:"timestamp"`
 				Signature        string    `json:"signature"`
-			} `json:"precommits"`
+			} `json:"signatures"`
 		} `json:"last_commit"`
 	} `json:"block"`
 }
@@ -104,17 +65,18 @@ type BlockData struct {
 type Validator struct {
 	Height string `json:"height"`
 	Result struct {
-		OperatorAddress string `json:"operator_address" sql:"operator_addr"`
-		ConsensusPubkey string `json:"consensus_pubkey" sql:"consensus_pubkey"`
+		OperatorAddress string `json:"operator_address"`
+		ConsensusPubkey string `json:"consensus_pubkey"`
 		Jailed          bool   `json:"jailed"`
 		Status          int    `json:"status"`
 		Tokens          string `json:"tokens"`
 		DelegatorShares string `json:"delegator_shares"`
 		Description     struct {
-			Moniker  string `json:"moniker"`
-			Identity string `json:"identity"`
-			Website  string `json:"website"`
-			Details  string `json:"details"`
+			Moniker         string `json:"moniker"`
+			Identity        string `json:"identity"`
+			Website         string `json:"website"`
+			SecurityContact string `json:"security_contact"`
+			Details         string `json:"details"`
 		} `json:"description"`
 		UnbondingHeight string    `json:"unbonding_height"`
 		UnbondingTime   time.Time `json:"unbonding_time"`

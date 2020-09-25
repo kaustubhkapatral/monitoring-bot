@@ -26,7 +26,7 @@ func HexCheck() (string, error) {
 			return "", nil
 		}
 	}
-	return blockInfo.BlockMeta.Header.Height, nil
+	return blockInfo.Block.Header.Height, nil
 }
 
 func JailCheck() (bool, error) {
@@ -37,6 +37,9 @@ func JailCheck() (bool, error) {
 	if err := utils.GetJSON(validatorUrl, valInfo); err != nil {
 		fmt.Println("Unable to query validator endpoint", err)
 		return false, err
+	}
+	if valInfo.Height == "" {
+		return false, fmt.Errorf("Could not read jail json")
 	}
 	return valInfo.Result.Jailed, nil
 }
